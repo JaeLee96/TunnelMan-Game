@@ -1,6 +1,12 @@
 #ifndef STUDENTWORLD_H_
 #define STUDENTWORLD_H_
 
+//
+//  StudentWorld.h
+//
+//  Created by Jaehyeong Lee on 8/23/18.
+//  Copyright (c) 2018 Jaehyeong Lee. All rights reserved.
+//
 
 #include "GameWorld.h"
 #include "GameConstants.h"
