@@ -1,6 +1,13 @@
 #ifndef ACTOR_H_
 #define ACTOR_H_
 
+//
+//  Actor.h
+//
+//  Created by Jaehyeong Lee on 8/23/18.
+//  Copyright (c) 2018 Jaehyeong Lee. All rights reserved.
+//
+
 #include "GraphObject.h"
 #include "GameConstants.h"
 
