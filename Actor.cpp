@@ -1,6 +1,12 @@
 #include "Actor.h"
 #include "StudentWorld.h"
 
+//
+//  Actor.cpp
+//
+//  Created by Jaehyeong Lee on 8/23/18.
+//  Copyright (c) 2018 Jaehyeong Lee. All rights reserved.
+//
 
 // --------------------------------------------------------- PROTESTER --------------------------------------------------------- // 
 
