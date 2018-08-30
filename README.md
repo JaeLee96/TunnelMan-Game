@@ -1,6 +1,6 @@
 # TunnelMan-Game
 
-<img width="576" alt="tunnelman demo" src="https://user-images.githubusercontent.com/32945767/44845474-7c4af780-ac02-11e8-806e-17227f01e160.png">
+<img width="570" alt="tunnelman demo" src="https://user-images.githubusercontent.com/32945767/44846667-dd27ff00-ac05-11e8-9c2c-5e12cbafbe40.png">
 
 It is a TunnelMan video game created in C++.
 
