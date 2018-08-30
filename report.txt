@@ -1,0 +1,430 @@
+1. A high-level description of each of your public member functions in each of
+your classes, and why you chose to define each member function in its host
+class; also explain why (or why not) you decided to make each function
+virtual or pure virtual. For example, “I chose to define a pure virtual version
+of the blah() function in my base class because all Actors in Tunnelman must
+have a blah function, and each type of actor defines their own special version
+of it.”
+
+GameObject(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
+
+
+void	setTemporState(int T)				
+void	setWorld(StudentWorld * game_addr)	
+void	setHitPoints(int P)					
+void	setDead()						
+void	Turn_Off_Sound()					
+void	Turn_On_Sound()	
+
+GameObject
+--------------
+GameObject(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth)
+is used to initialize starting location, direction, and graphic representation of an object.
+
+void setTemporState(int T) is used to set temporary state for the goodies so that they're properly
+disappeared from the game screen after certain time. 
+
+void setWorld(StudentWorld * game_addr) is used to connect with StudentWorld class in case objects need
+its functions to carry out actions.
+
+void setHitPoints(int P) is used by protesters, squirts, and tunnelman to respond to damages received and
+decrease their health points correspondingly.
+
+void setDead() is used to mark each actor dead so StudentWorld can properly delete them off the screen.
+
+void Turn_Off_Sound() and void Turn_On_Sound() is used so that each actor has played out 
+appropriate number of times.
+
+bool 	isAlive() const						
+int 	getHitPoints() const				
+Sound	getSwitch() const				
+int	getTemporState() const				
+StudentWorld * getWorld() const			
+
+Above functions are getter functions for GameObject class. They're used to return current status of each actor and
+to call object of the StudentWorld class.
+
+void	 decreTemporState();
+void	 decreHitPoints(int P)
+
+Above functions are used to decrease temporary state and hitpoints of either protesters or tunnelman.
+
+
+Goodies
+---------
+
+Actors		getOwnership() const					
+void		setOwnership(Actors actor);
+virtual void 	doSomething(TunnelMan * player) = 0;
+
+Goodies(int imageID, int startX, int startY, Direction dir,
+	double size, unsigned int depth);	
+is used to initialize starting location, direction, ownership, and graphic representation of an object.
+
+getOwnership() function is used to determine whether the gold nugget is hidden within Earth or dropped by 
+a player. Because gold nugget within the earth is in permanent state but is temporary if dropped by a player,
+it is necessary to implement this function.setOwnership(Actors actor) is a setter function that sets actor's
+ownership.
+
+virtual void doSomething(TunnelMan * player) = 0 is implemented as a virtual function because all the goodie
+items derived need to perform an action for each tick
+
+Golds
+-----
+Golds(int startX, int startY, bool setting, Actors owner) is used to 
+initialize starting location, temporary state, direction, ownership, and graphic representation of an object.
+
+void doSomething(TunnelMan * player) in Golds class is a pure virtual class derived from Goodies abstract data
+type class. This function checks if it is in permanent state or in temporary state then take actions accordingly.
+If it is in permanent state and player picks it up, it ensures adding scores, number of golds, plays sound, and
+updates game display text. If it is in temporary state, it sets itself dead after certain time has passed, or if
+picked up by a protester, makes him leave the oil field or stunned for a period of time.
+
+Sonar
+-----
+
+Sonar(int currLevel) is used to 
+initialize temporary state of an object.
+
+void doSomething(TunnelMan * player) in Sonar class is a pure virtual class derived from Goodies abstract data
+type class. This function ensures, when the player is nearby, to add scores and a number of golds, plays sound,
+and updates game display text. It sets itself dead after certain time has passed, if not picked up by the player
+
+Squirt
+-----
+
+Squirt(int col, int row, Direction dir) is used to set its visibility to true.
+
+void doSomething(TunnelMan * player) in Squirt class is a pure virtual class derived from Goodies abstract data
+type class. This function ensures, when the player is nearby. It ensures to damage the protester if he is within
+the range and sets itself dead if travelled for 4 or more distance.
+
+
+Water
+-----
+Water(int startX, int startY, int currLevel) is used to
+initialize starting location, temporary state, and direction of an object.
+
+
+void doSomething(TunnelMan * player) in Water class is a pure virtual class derived from Goodies abstract data
+type class. This function ensures, when the player is nearby, to add scores and a number of waters, plays sound,
+and updates game display text. It sets itself dead after certain time has passed, if not picked up by the player
+
+BarrelOil
+--------
+
+BarrelOil(int startX, int startY) is used to initialize its visibility.
+
+void doSomething(TunnelMan * player) in BarrelOil class is a pure virtual class derived from Goodies abstract data
+type class. This function ensures, when the player is nearby, to add scores and a number of oils, plays sound,
+and updates game display text. 
+
+Earth
+-----
+Earth(int startX, int startY) : 
+	GraphObject(TID_EARTH, startX, startY, right, 0.25, 3)
+
+is used to initialize starting location, direction, and graphic representation of an object.
+
+Boulder
+------
+
+Boulder(int startX,	int startY);
+void	setFallingState(bool T)	
+bool	getFallingState() const		
+void	doSomething(TunnelMan * player);
+
+
+Boulder(int startX, int startY) is is used to initialize starting location of an object.
+
+setFallingState and getFallingState functions are used to set and get status of boulder because when there is no 
+earth below the object, it needs to free-fall until it runs into another boulder or earth
+
+void doSomething(TunnelMan * player) in Boulder class checks whether or not there is earth below the object and if not, free-falls until it
+it ran into an earth or another boulder object. If protester or player is hit during the fall, this function sets
+them dead immediately.
+
+
+Protester
+--------
+
+Protester(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
+is used to initialize starting location, direction, and graphic representation of an object.
+
+virtual void doSomething(TunnelMan * player)
+
+I decided to make this function virtual because there will be two types of protesters: regular and hardcore. Each
+of these actors need to implement an action function that shares a lot of similarity but also significantly
+differentiated functionality. This function will check if the player is in horizontal or vertical sight and
+artificially automates its movements 
+
+SETTER FUNCTIONS
+
+void	setPathToExit(std::string path)				
+void	setTicksToWaitBetweenMoves(int T)				
+void	setTicksToWaitBetweenTurns(int T)			
+void	setNumSquaresToMoveInCurrentDirection(int T)
+void	setShoutingInterval(int T)					
+void	setToLeaveOilFieldState()					
+void	setTicksSincePerpenMoves(int T)				   
+
+These are all public setter functions to modify or initialize protester's stats.
+
+setPathToExit(std::string path) sets its path protester needs to take when it is in leaveOilField mode.
+
+setTicksToWaitBetweenMoves(int T) sets ticks to wait between moves.
+
+setTicksToWaitBetweenTurns(int T) sets ticks to wait between turns.
+
+setNumSquaresToMoveInCurrentDirection(int T) sets how many squares protester has to go in current direction
+before turning to new direction.
+
+setShoutingInterval(int T) sets how many ticks protester has to wait before shouting again to the player.
+
+setToLeaveOilFieldState() sets protester to leave the oil field.
+
+setTicksSincePerpenMoves(int T) sets how many ticks have passed since making move in perpendicular direction.
+
+GETTER FUNCTIONS
+
+std::string& getPathToExit()						
+int	getTicksToWaitBetweenMoves() const				
+int	getTicksToWaitBetweenTurns() const				
+int	getShoutingInterval() const					
+int	getNumSquaresToMoveInCurrentDirection() const	
+int	getTicksSincePerpenMoves() const		
+bool	leaveOilFieldState() const			
+
+These are all public getter functions to eturn protester's stats.
+
+
+std::string& getPathToExit() returns protester's specified path to exit point.
+
+getTicksToWaitBetweenMoves() const returns how many ticks have passed since protester made a move.
+
+getTicksToWaitBetweenTurns() const returns how many ticks have passed since protester made a turn.
+
+getShoutingInterval() const returns how many intervals have passed since protester made a shout.
+
+getNumSquaresToMoveInCurrentDirection() const returns a number of squares to move in current direction.
+
+getTicksSincePerpenMoves() const returns how many ticks have passed since protester made a perpendicular move.
+
+leaveOilFieldState() const returns whether or not a protester is in leaveOilFieldState mode.
+
+void	 decreTicksToWaitBetweenMoves()			
+void   	 decreNumSquaresToMoveInCurrentDirection()	
+void	 decreTicksSincePerpenMoves()			
+void	 decreShoutingTime()				
+
+decreTicksToWaitBetweenMoves() decreases a number of ticks to wait before making another move.
+	
+decreNumSquaresToMoveInCurrentDirection() decreases a number of squares to move in current direction.
+
+decreTicksSincePerpenMoves() decreases a number of ticks to wait before making another perpendicular move.
+
+decreShoutingTime() decreases a number of ticks to wait before shouting again to the player.
+
+void	init_Golds();
+void	init_Squirts();
+void	doSomething();
+void	move_Golds();
+void	move_Squirts();
+void	move_Sonars();
+
+void init_Golds() initializes golds on the screen when the player drops them.
+
+void init_Squirts() initializes squirts on the screen when the player presses 'SPACE.'
+
+voi doSomething() is the main controller function that channels between the keyboard instructions and the game display.
+
+void move_Golds() deletes golds when necessary and instructs each gold objecct to perofrm an action.
+
+void move_Squirts() deletes squirts when necessary and instructs each squirt objecct to perofrm an action.
+
+void move_Sonars() deletes squirts when necessary and instructs each squirt objecct to perofrm an action.
+
+
+// GETTER FUNCTIONS //
+
+int	geHealthPts() const			
+int	getNumOfSonars() const			
+int	getNumOfWaters() const			
+int	getnumOfGolds() const			
+int	getNumOfOils() const			
+int	getCurrScore() const
+
+These are getter functions that return quantity of current inventories available.
+			
+std::vector<Golds*>& getGolds() returns gold objects to StudentWorld		
+std::vector<Squirt*>& getSquirts() returns squirt objects to StudentWorld	
+
+// INCREASE INVENTORIES //
+
+void	addOil()						
+void	addSonar()						
+void	addWater()						
+void	addScore(int score)				
+void	addGold()						
+void	addGolds(int col, int row, bool setting, Actors owner);
+
+These are setter functions that add quantity of current inventories available.
+
+// DECREASE INVENTORIES //
+
+void	decreSonar()					
+void	decreWater()				
+void	decreGold()						
+void	decreHitpts(int damage)			
+
+These are setter functions that decrease quantity of current inventories or healthpoints.
+
+StudentWorld
+-------------
+
+virtual int init() initializes all game objects to be displayed on the screen. 
+virtual int move() instructs all game objects to perform an action.
+virtual void cleanUp() deletes all game objects.
+
+void	move_Water();
+void	move_Boulders();
+void	move_Sonar();
+void	move_Oils();
+void	move_Protesters();
+void	dig_Earth();
+
+void move_Water() pushes water objects onto the game by predetermined possibility and instructs them to perform
+an action. Then it deletes them if necessary.
+
+void move_Boulders() instructs boulder objects to perform an action and deletes them if necessary.
+
+void move_Sonar() pushes sonar objects onto the game by predetermined possibility and instructs them to perform
+an action. Then it deletes them if necessary.
+
+void move_Oils() instructs oil objects to perform an action and deletes them if necessary.
+
+void move_Protesters() determines and pushes regular or hardcore protesters and keeps track of
+how many protesters to be added on the game. Then it instructs them to perform an action and deletes them if
+necessary.
+
+void dig_Earth() lets player dig through the earth and deletes earth objects that have been dug.
+
+
+bool	isWithinRange_sameObjs(int col, int row, iterator_type it, iterator_type end) const;
+bool	isWithinRange(int x_cord, int y_cord, GameObject * actor) const;	
+bool	isWithinRange(int col, int row) const;		//	CHECK IF EARTH IS WITHIN RANGE
+bool	isWithinRange_Boulder(int col, int row) const;
+
+bool	isPlayerCloseBy(int col, int row) const;
+bool	isValidSpotToMove(int col, int row) const;
+bool	isEarthIndex(int col, int row) const;
+bool	isEarthBelow(int col, int row) const;
+
+void	activateSonars();
+Protester * hitProtester(int x_cord, int y_cord) const;
+void setGameText();
+
+isWithinRange_sameObjs() returns true if for each game object, there is another game object of same type within
+the range.
+
+isWithinRange(int x_cord, int y_cord, GameObject * actor) const returns true if player is within radius of 3.
+
+isPlayerCloseBy(int col, int row) const returns true if player is within radius of 4.
+
+isWithinRange(int col, int row) const returns true if earth is within the range.
+
+isWithinRange_Boulder(int col, int row) const returns true if boulder is within the range.
+
+isValidSpotToMove(int col, int row) returns true if there is no earth or boulder object on the given spot.
+
+isEarthIndex(int col, int row) const returns true if earth can exist on the given spot.
+
+isEarthBelow(int col, int row) const returns true if earth is below of the given spot.
+
+activateSonars() sets objects hidden within the earth visible if a player is within radius of 12.
+
+Protester * hitProtester(int x_cord, int y_cord) const returns a pointer to the protester that is within radius of 3
+
+void setGameText() sets game display text.
+
+
+2. A list of all functionality that you failed to finish as well as known bugs in
+your classes, e.g. “I wasn’t able to implement the Squirt class.” or “My 
+54 Hardcore Protester doesn’t work correctly yet so I just treat it like a Regular
+Protester right now.”
+
+I failed to implement a functionality for hardcore protester in which it would be able to detect the player
+within the range of M = 16 + current_level_number * 2 and automatically move to his location.
+
+I failed to find the OPTIMAL (shortest) path for each protester. 
+
+3. A list of other design decisions and assumptions you made, e.g.:
+i. It was ambiguous what to do in situation X, and this is what I decided
+to do.
+
+I wasn't sure what to do if a water objects could be spawned within the range of one another. After running the
+sample window and seeing that they can be overlapped, I decided to leave it as it is. Moreover, I did not know
+what is the maximum level the player can achieve so I just assumed it could go as long as the player is alive.
+
+For protesters, I was uncertain what is the criteria for determining number of squares to move in current direction.
+So I just randomly picked the number between 8 and 60. 
+
+
+4. A description of how you tested each of your classes (1-2 paragraphs per
+class)
+
+Goodies and GameObject classes: I did not test anything because they're abstract data type classes 
+with simple functionalities.
+
+Golds class: I tested by first setting all gold objects to be visible within the earth. Then I could check
+whether an appropriate number of objects were being generated in sparse locations from one another. Lastly, I
+played game to see if golds would perform corresponding actions when player or protesters are nearby.
+
+Sonar class: I tested by playing game and see if it is being generated in correct location and in 
+appropriate intervals. Also I had protesters walk all over it to make sure it is not pickupable by anyone
+but the plyer. I also pressed key 'z' to see if it is revealing hidden objects within the radius of 12.
+
+Squirt class: I tested by playing game and shooting squirt on boulder, earth, and protester objects to make
+sure squirt can't pass trough them. Then I shot squirt on both regular and hardcore protesters to see if they
+receive damages and set themselves dead when their hit points reach zero.
+
+Water class: I tested by playing game and to see if it is generated in earthless spots and disappears after
+its temporary state is over.
+
+BarrelOil class: I tested by playing game and made sure it is always in permanent state, hidden within earth,
+and if all of oils are picked up by the player, move on to the next level.
+
+Earth class: I tested by playing game to see if they're generated according to the criteria and deleted if
+the tunnelman digs through.
+
+Boulder class: I tested by playing game and made sure they're generated within the earth, apart from each other,
+and kills player or protesters if they're within the range.
+
+Protester class: I played game to see if their movements are automated and go to the exit when they're in
+leaveTheOilField mode.
+
+Regular Protester class: I tested regular protester class by moving the player in horizontal or vertical sight of
+the protesters (with no objects in between) to see if protesters will detecct the player automatically and move
+towards player's direction. Also, I made sure that they do not walk pass the boulder or the earth by having them
+trying to move through them.
+
+Hardcore Protester class: I tested hardcore protester class by moving the player in horizontal or vertical sight of
+the protesters (with no objects in between) to see if protesters will detecct the player automatically and move
+towards player's direction. Also, I made sure that they do not walk pass the boulder or the earth by having them
+trying to move through them. Lastly, I checked if a hardcore protester has higher health points by shooting squirts
+on him and to see if he lasts longer than a regular protester.
+
+TunnelMan class: I tested TunnelMan class by virtually testing every keyboard input and see if the player is doing
+what it's supposed to be doing. I made sure by playing game and pressing space, tab, directional keys, 'z', to 
+see if the corresponding objects were being generated. I also checked that once its health points are below zero,
+it would set itself dead and end the program.
+
+StudentWorld class: As the main class the implements game logics. I tested this class by making sure that each
+actor is behaving appropriately to the game logic implmenetation functions. I made sure the objects were generated
+at least 6 radius apart from one another, notify each object if the player is nearby, each object performs an action,
+and earth is being dug properly.
+
+
+ 
+
+
