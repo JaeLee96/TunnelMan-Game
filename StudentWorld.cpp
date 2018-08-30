@@ -2,6 +2,13 @@
 #include <string>
 #include <algorithm>
 
+//
+//  StudentWorld.cpp
+//
+//  Created by Jaehyeong Lee on 8/23/18.
+//  Copyright (c) 2018 Jaehyeong Lee. All rights reserved.
+//
+
 GameWorld* createStudentWorld(std::string assetDir)
 {
 	return new StudentWorld(assetDir);
