@@ -2,7 +2,7 @@
 
 <img width="570" alt="tunnelman demo" src="https://user-images.githubusercontent.com/32945767/44846667-dd27ff00-ac05-11e8-9c2c-5e12cbafbe40.png">
 
-It is a TunnelMan video game created in C++.
+TunnelMan video game created in C++.
 
 Player has to dig through the dirts to collect as many oils as it can, while avoiding protesters, in order to complete each level.
 To interrupt player's mission, there will be protesters who will follow user and shout at him until user's 
